@@ -1,0 +1,228 @@
+<head>
+    <style>
+        img {
+            border-radius: 10px;
+        }
+
+        .tab {
+            display: inline-block;
+            margin-left: 40px;
+        }
+
+        p,
+        h1,
+        h2,
+        h3 {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .code {
+            font-family: "Lucida Console", "Courier New", monospace;
+            background-color: black;
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Lab Assignment #2: LEDs and Push Buttons<br>
+        2023-09-27</h1>
+
+    <h2>Project #1</h2>
+
+    <h3>Description of what the lab assignment is about</h3>
+    <p>This assignemnt is meant to test our skill with PWM with the LED bar graph. <br>
+        Again, it also makes us incorporate a button with the project.</p>
+
+    <h3>List of Hardware Components</h3>
+
+    <ul>
+        <li>LED Bar Graph</li>
+        <li>12 x wires</li>
+        <li>8 x 220-ohm resistor</li>
+        <li>4 x 10k-ohm resistor</li>
+        <li>2 x push buttons</li>
+        <li>ESP 32</li>
+    </ul>
+
+
+    <h3>Circuit Diagram</h3>
+    <img src="Project_1_CircuitDiagram.jpg" width="1000" height="708">
+
+    <h3>Breadboard View</h3>
+    <img src="Project_1_BreadboardView.jpg" width="1800" height="708">
+
+    <h3>Breadboard Settings</h3>
+    <img src="Project_1.jpg" width="1000" height="708">
+
+    <h3>Video</h3>
+    <video controls autoplay>
+        <source src="Project_1.mov" type="video/mp4">
+    </video>
+
+    <h3>Source Code</h3>
+
+    <p class="code">
+        from machine import Pin,PWM<br>
+        from pwm import myPWM<br>
+        import time<br>
+        <br>
+        mypwm = myPWM(15,2,0,4,5,18,19,21)<br>
+        chns=[0,1,2,3,4,5,6,7];<br>
+        dutys=[0,0,0,0,0,0,0,0,1023,512,256,128,64,32,16,8,0,0,0,0,0,0,0,0];<br>
+        delayTimes=50<br>
+        <br>
+        buttonLR = Pin(13, Pin.IN,Pin.PULL_UP)<br>
+        buttonRL = Pin(12, Pin.IN,Pin.PULL_UP)<br>
+        <br>
+        def RtoL():<br>
+        <span class="tab"></span>for x in range(100):<br>
+        <span class="tab"></span><span class="tab"></span>for i in range(0,16):<br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span>for j in range(0,8):<br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span><span
+            class="tab"></span>mypwm.ledcWrite(chns[j],dutys[i+j])<br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span>if not buttonLR.value():<br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span><span class="tab"></span>LtoR()<br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span>time.sleep_ms(delayTimes)<br>
+        <br>
+        def LtoR():<br>
+        <span class="tab"></span>for x in range(100):<br>
+        <span class="tab"></span><span class="tab"></span>for i in range(0,16):<br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span>for j in range(0,8):<br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span><span
+            class="tab"></span>mypwm.ledcWrite(chns[7-j],dutys[i+j])<br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span>if not buttonRL.value():<br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span><span class="tab"></span>RtoL()<br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span>time.sleep_ms(delayTimes)<br>
+        <br>
+        try:<br>
+        <span class="tab"></span>while True:<br>
+        <span class="tab"></span><span class="tab"></span>if not buttonLR.value():<br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span>LtoR()<br>
+        <br>
+        <span class="tab"></span><span class="tab"></span>if not buttonRL.value():<br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span>RtoL()<br>
+        except:<br>
+        <span class="tab"></span>mypwm.deinit()<br>
+        <br>
+
+    </p>
+
+    <h2>Project #2</h2>
+
+    <h3>Description of what the lab assignment is about</h3>
+    <p>This assignment is meant to for us to be able to use PWM with colours such as <br>
+        an RGB LED and a Freenove 8 RGB LED Module.</p>
+
+    <h3>List of Hardware Components</h3>
+
+    <ul>
+        <li>1 x RGB Led</li>
+        <li>1 x Freenove 8 RGB LED Module</li>
+        <li>9 x wires</li>
+        <li>3 x 220-ohm resistor</li>
+        <li>2 x 10k-ohm resistor</li>
+        <li>1 x push buttons</li>
+        <li>ESP 32</li>
+    </ul>
+
+
+    <h3>Circuit Diagram</h3>
+    <img src="Project_2_CircuitDiagram.jpg" width="1000" height="708">
+
+    <h3>Breadboard View</h3>
+    <img src="Project_2_BreadboardView.jpg" width="1400" height="708">
+
+    <h3>Breadboard Settings</h3>
+    <img src="Project_2.jpg" width="1000" height="708">
+
+    <h3>Video</h3>
+    <video controls autoplay>
+        <source src="Project_2.mov" type="video/mp4">
+    </video>
+
+    <h3>Source Code</h3>
+
+    <p class="code">
+        from machine import Pin,PWM<br>
+        import time<br>
+        import neopixel<br>
+        <br>
+        pin = Pin(4, Pin.OUT)<br>
+        np = neopixel.NeoPixel(pin, 8)<br>
+        <br>
+        brightness=10<br>
+        colorsNP=[[brightness,0,0], #red<br>
+        <span class="tab"></span>[brightness, 2, 0], #orange<br>
+        <span class="tab"></span>[brightness, 5, 0], #yellow<br>
+        <span class="tab"></span>[0,brightness,0], #green<br>
+        <span class="tab"></span>[0, 0, 8], #blue<br>
+        <span class="tab"></span>[0,0,brightness], #indigo<br>
+        <br>
+        <span class="tab"></span>[brightness,0,brightness], #violet<br>
+        ]<br>
+        <br>
+        # red to orange to yellow to green to blue to indigo to violet to red to orange to<br>
+        colorsPWM = [[0, 0, 1023], #red<br>
+        <span class="tab"></span>[0, 80, 1023], # orange<br>
+        <span class="tab"></span>[0, 250, 1023], # yellow<br>
+        <span class="tab"></span>[0, 1023, 0], #green<br>
+        <span class="tab"></span>[1023, 500, 0], # blue<br>
+        <span class="tab"></span>[1023, 0, 0], #indigo<br>
+        <span class="tab"></span>[1023, 0, 1023], #violet<br>
+        ]<br>
+        <br>
+        #create button object from pin13,Set Pin13 to Input<br>
+        button = Pin(13, Pin.IN,Pin.PULL_UP)<br>
+        count = 0<br>
+        <br>
+        pins=[15,2,0]<br>
+        <br>
+        pwm0=PWM(Pin(pins[0]),10000)<br>
+        pwm1=PWM(Pin(pins[1]),10000)<br>
+        pwm2=PWM(Pin(pins[2]),10000)<br>
+        <br>
+        def setColor(r,g,b):<br>
+        <span class="tab"></span>pwm0.duty(1023-r)<br>
+        <span class="tab"></span>pwm1.duty(1023-g)<br>
+        <span class="tab"></span>pwm2.duty(1023-b)<br>
+        <br>
+        try:<br>
+        <span class="tab"></span>while True:<br>
+        <span class="tab"></span><span class="tab"></span>if not button.value():<br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span>time.sleep_ms(20)<br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span>if not button.value():<br>
+        <br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span><span class="tab"></span>count +=
+        1<br>
+        <br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span><span class="tab"></span>if count ==
+        7:<br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span><span class="tab"></span><span
+            class="tab"></span>count = 0<br>
+        <br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span><span
+            class="tab"></span>print(count)<br>
+        <br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span><span
+            class="tab"></span>setColor(colorsPWM[count][0], colorsPWM[count][1], colorsPWM[count][2])<br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span><span class="tab"></span>for i in
+        range(0,8):<br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span><span class="tab"></span><span
+            class="tab"></span>np[i] = colorsNP[count]<br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span><span class="tab"></span><span
+            class="tab"></span>np.write()<br>
+        <br>
+        <br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span><span class="tab"></span>while not
+        button.value():<br>
+        <span class="tab"></span><span class="tab"></span><span class="tab"></span><span class="tab"></span><span
+            class="tab"></span>time.sleep_ms(20)<br>
+
+        except:<br>
+        <span class="tab"></span>pwm0.deinit()<br>
+        <span class="tab"></span>pwm1.deinit()<br>
+        <span class="tab"></span>pwm2.deinit()<br>
+
+    </p>
+</body>
